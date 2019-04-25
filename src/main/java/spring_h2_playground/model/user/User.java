@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(schema = "user")
+@Table(name = "USER")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private int id;
 
     private String name;
@@ -60,7 +60,6 @@ public class User {
         int result = 1;
         result = prime * result + age;
         result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -85,9 +84,6 @@ public class User {
                 return false;
             }
         } else if (!email.equals(other.email)) {
-            return false;
-        }
-        if (id != other.id) {
             return false;
         }
         if (name == null) {
