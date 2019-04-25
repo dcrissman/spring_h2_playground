@@ -1,6 +1,7 @@
 package spring_h2_playground;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,21 +37,48 @@ public class MainTest {
     @Autowired
     private UserRepository2 repo2;
 
-    @Test
-    public void test() {
+    private User fakeUser() {
         User user = new User();
         user.setAge(4);
         user.setName("Name");
         user.setEmail("my@email.com");
 
-        int id1 = repo1.save(user).getId();
-        int id2 = repo2.save(user).getId();
+        return user;
+    }
 
-        //int id1 = dao1.persist(user);
-        //int id2 = dao2.persist(user);
+    private void assertUser(User user) {
+        assertNotNull(user);
+        assertEquals(4, user.getAge());
+        assertEquals("Name", user.getName());
+        assertEquals("my@email.com", user.getEmail());
+    }
 
-        assertEquals(dao1.getUser(id1), dao2.getUser(id2));
-        assertEquals(repo1.findById(id1), repo2.findById(id2));
+    @Test
+    public void testUserRepository1() {
+        int id = repo1.save(fakeUser()).getId();
+
+        assertUser(repo1.findById(id).get());
+    }
+
+    @Test
+    public void testUserRepository2() {
+        int id = repo2.save(fakeUser()).getId();
+
+        assertUser(repo2.findById(id).get());
+    }
+
+    @Test
+    public void testDao1() {
+        int id = dao1.persist(fakeUser());
+
+        assertUser(dao1.getUser(id));
+    }
+
+    @Test
+    public void testDao2() {
+        int id = dao2.persist(fakeUser());
+
+        assertUser(dao2.getUser(id));
     }
 
 }
