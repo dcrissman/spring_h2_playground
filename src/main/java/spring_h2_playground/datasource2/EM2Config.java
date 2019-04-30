@@ -16,6 +16,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import spring_h2_playground.datasource1.UserDao1TransactionManaged;
 import spring_h2_playground.model.user.UserDao;
 
 @Configuration
@@ -58,6 +59,13 @@ public class EM2Config {
     @Bean(name = "userDao2")
     public UserDao userDao2(@Qualifier("userEntityManager2") EntityManager mgr) {
         return new UserDao2(mgr);
+    }
+    
+    @Bean(name = "userDao2TransactionManaged")
+    public UserDao userDao2TransactionManaged(
+            @Qualifier("userEntityManager2") EntityManager mgr,
+            @Qualifier("ds2TransactionManager") PlatformTransactionManager transactionManager) {
+        return new UserDao2TransactionManaged(mgr, transactionManager);
     }
 
 }

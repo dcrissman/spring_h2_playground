@@ -64,4 +64,11 @@ public class EM1Config {
         return new UserDao1(mgr);
     }
 
+    @Bean(name = "userDao1TransactionManaged")
+    public UserDao userDao1TransactionManaged(
+            @Qualifier("userEntityManager1") EntityManager mgr,
+            @Qualifier("ds1TransactionManager") PlatformTransactionManager transactionManager) {
+        return new UserDao1TransactionManaged(mgr, transactionManager);
+    }
+
 }

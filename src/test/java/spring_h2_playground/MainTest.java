@@ -37,6 +37,14 @@ public class MainTest {
     @Autowired
     private UserRepository2 repo2;
 
+    @Autowired
+    @Qualifier("userDao1TransactionManaged")
+    private UserDao dao1TransactionManaged;
+
+    @Autowired
+    @Qualifier("userDao2TransactionManaged")
+    private UserDao dao2TransactionManaged;
+
     private User fakeUser() {
         User user = new User();
         user.setAge(4);
@@ -79,6 +87,20 @@ public class MainTest {
         int id = dao2.persist(fakeUser());
 
         assertUser(dao2.getUser(id));
+    }
+
+    @Test
+    public void testDao1TransactionManaged() {
+        int id = dao1TransactionManaged.persist(fakeUser());
+
+        assertUser(dao1TransactionManaged.getUser(id));
+    }
+
+    @Test
+    public void testDao2TransactionManaged() {
+        int id = dao2TransactionManaged.persist(fakeUser());
+
+        assertUser(dao2TransactionManaged.getUser(id));
     }
 
 }
